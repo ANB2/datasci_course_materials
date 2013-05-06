@@ -1,0 +1,13 @@
+git fetch upstream
+# Fetches any new changes from the original repository
+
+git merge upstream/master
+# Merges any changes fetched into your working files
+
+====================================================================================
+OR
+====================================================================================
+
+git pull upstream
+# Pulls commits from 'upstream' and stores them in the local repository
+## (note that 'pull' automatically merges commits without letting you to review first)
