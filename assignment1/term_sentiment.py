@@ -33,7 +33,7 @@ def main():
             score = 0
             unk = []
             for x in words:
-                if x in sentiment.keys():
+                if x in sentiment:
                     score += sentiment[x]
                 else:
                     unk.append(x)

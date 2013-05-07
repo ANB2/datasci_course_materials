@@ -38,7 +38,7 @@ def main():
                 for x in myNgrams:
                     words.append(' '.join(x))
 
-            print float( sum([sentiment[x] if x in sentiment.keys() else 0 for x in words]) )
+            print float( sum([sentiment[x] if x in sentiment else 0 for x in words]) )
             
         except:
             pass    
