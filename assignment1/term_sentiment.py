@@ -1,6 +1,7 @@
 import sys
 import json
 import string
+from collections import defaultdict
 
 def hw():
     print 'Hello, world!'
@@ -13,22 +14,18 @@ def main():
     tweet_file = open(sys.argv[2])
 
     # build word:sentiment dictionary
-    word = []
-    score = []
+    sentiment = {}
     for line in sent_file:
-        a, b = line.split('\t')
-        word.append(unicode(a, 'UTF-8'))
-        score.append(int(b))
-    sentiment = dict(zip(word, score))
+        term, score = line.split('\t')
+        sentiment[term] = int(score)
 
-    # the mapping is used for unicode `translate` method
-    remove_punctuation_map = dict((ord(char), None) for char in '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~')
+    unknowns = defaultdict(int)
 
     for line in tweet_file:
         try:
-            # chosen normalisation: lower case, no punctuation
+            # chosen normalisation: 
             # we don't consider n-grams here, only one-words
-            words = json.loads(line)['text'].translate(remove_punctuation_map).lower().strip().split()
+            words = json.loads(line)['text'].encode('ascii', 'ignore').strip().split()
 
             score = 0
             unk = []
@@ -37,13 +34,17 @@ def main():
                     score += sentiment[x]
                 else:
                     unk.append(x)
-
-            # a very simplistic approach: assign unknown word a score equal to its tweet
+            
+            # the score of an unknown word is defined as:
+            # the sum of the tweet scores in which the word appears
             for x in unk:
-                print '%s %.3f' % (x, score)
+                unknowns[x] += score
             
         except:
             pass
+    
+    for k, v in unknowns.iteritems():
+        print '%s\t%.3f' % (k.encode('UTF-8'), float(v))
 
     #hw()
     #lines(sent_file)

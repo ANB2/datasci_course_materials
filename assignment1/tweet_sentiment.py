@@ -29,7 +29,7 @@ def main():
         try:
             # chosen normalisation: lower case, no punctuation
             words = json.loads(line)['text'].translate(remove_punctuation_map).lower().strip().split()
-            
+
             # chosen n-gram strategy: build all n-grams and consider all match
             # we know that there's only up to 3 words in the dict
             temp = list(words)
